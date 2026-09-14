@@ -67,6 +67,17 @@
             font-size: 0.875rem;
             margin-top: 0.5rem;
         }
+        .descarga-estado {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            min-height: 1.2em;
+        }
+        .descarga-estado.error { color: #ef4444; }
+        .descarga-estado.ok { color: #15803d; }
+        #btnDescargarPy:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -142,16 +153,16 @@
                 </div>
             </form>
             
-            <!-- Botón de descarga con icono de carro -->
+            <!-- Botón de descarga: ahora trae Examen.py vía fetch + blob -->
             <div class="text-center mt-8">
-                <a href="https://drive.usercontent.google.com/download?id=1T8zhLawS2HsUPDY5wAbwGNUwRwHs-3re&export=download&authuser=2&confirm=t&uuid=72feac28-1114-4b40-a4ed-3ba962fe3936&at=AN8xHoqAL5GjUeIIDyxC-gJ0R-EK:1757568086355" 
-                   target="_blank"
+                <button type="button" id="btnDescargarPy"
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                     <i class="ri-truck-line text-2xl mr-3"></i>
                     <span>Descargar Archivos</span>
                     <i class="ri-download-line text-lg ml-2"></i>
-                </a>
-                <p class="text-sm text-gray-500 mt-2">Haz clic para acceder a los archivos compartidos</p>
+                </button>
+                <p class="text-sm text-gray-500 mt-2">Haz clic para descargar Examen.py</p>
+                <p id="descargaEstado" class="descarga-estado"></p>
             </div>
         </div>
     </div>
@@ -335,6 +346,41 @@
 
         // Validación inicial al cargar la página
         validateFiles();
+
+        // ─────────────────────────────────────────────
+        // Descarga de Examen.py (fetch + blob)
+        // ─────────────────────────────────────────────
+        const URL_EXAMEN_PY = "https://raw.githubusercontent.com/cipfes/hola/refs/heads/main/Examen.py";
+        const btnDescargarPy = document.getElementById("btnDescargarPy");
+        const descargaEstado = document.getElementById("descargaEstado");
+
+        btnDescargarPy.addEventListener("click", async () => {
+            btnDescargarPy.disabled = true;
+            descargaEstado.textContent = "Descargando...";
+            descargaEstado.className = "descarga-estado";
+            try {
+                const respuesta = await fetch(URL_EXAMEN_PY);
+                if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
+                const texto = await respuesta.text();
+
+                const blob = new Blob([texto], { type: "text/x-python;charset=utf-8" });
+                const enlace = document.createElement("a");
+                enlace.href = URL.createObjectURL(blob);
+                enlace.download = "Examen.py";
+                document.body.appendChild(enlace);
+                enlace.click();
+                document.body.removeChild(enlace);
+                URL.revokeObjectURL(enlace.href);
+
+                descargaEstado.textContent = "Examen.py descargado correctamente.";
+                descargaEstado.className = "descarga-estado ok";
+            } catch (err) {
+                descargaEstado.textContent = "No se pudo descargar. Inténtalo de nuevo.";
+                descargaEstado.className = "descarga-estado error";
+            } finally {
+                btnDescargarPy.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
