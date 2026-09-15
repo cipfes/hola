@@ -1,18 +1,57 @@
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NETWORKS - Contacto con Archivos</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <script>tailwind.config={theme:{extend:{colors:{primary:'#3b82f6',secondary:'#64748b'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
 
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>NETWORKS - Contacto con Archivos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+          rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+
     <style>
+
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        /* Área para subir archivos */
         .file-upload-area {
             border: 2px dashed #d1d5db;
             border-radius: 8px;
@@ -20,15 +59,19 @@
             text-align: center;
             transition: all 0.3s ease;
         }
+
         .file-upload-area:hover,
         .file-upload-area.dragover {
             border-color: #3b82f6;
             background-color: #f8fafc;
         }
+
         .file-upload-area.required {
             border-color: #ef4444;
             background-color: #fef2f2;
         }
+
+        /* Archivo seleccionado */
         .file-item {
             background-color: #f3f4f6;
             border-radius: 6px;
@@ -38,6 +81,8 @@
             align-items: center;
             justify-content: space-between;
         }
+
+        /* Pantalla de carga */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -50,6 +95,8 @@
             align-items: center;
             z-index: 9999;
         }
+
+        /* Spinner */
         .spinner {
             border: 4px solid #f3f4f6;
             border-top: 4px solid #3b82f6;
@@ -58,329 +105,1066 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
+        /* Mensajes */
         .error-message {
             color: #ef4444;
             font-size: 0.875rem;
             margin-top: 0.5rem;
         }
+
         .descarga-estado {
             font-size: 0.85rem;
             margin-top: 0.5rem;
             min-height: 1.2em;
         }
-        .descarga-estado.error { color: #ef4444; }
-        .descarga-estado.ok { color: #15803d; }
+
+        .descarga-estado.error {
+            color: #ef4444;
+        }
+
+        .descarga-estado.ok {
+            color: #15803d;
+        }
+
+        /* Botón deshabilitado */
         #btnDescargarPy:disabled {
             opacity: 0.6;
             cursor: wait;
         }
+
     </style>
+
 </head>
+
+
 <body class="bg-gray-50">
-    <!-- Logo en la esquina superior derecha -->
+
+
+    <!-- ========================================================= -->
+    <!-- LOGO -->
+    <!-- ========================================================= -->
+
     <div class="fixed top-4 right-4 z-50">
-        <img src="https://raw.githubusercontent.com/Nipson/mensajeria/refs/heads/main/LOGO%20EMPRESA.png" 
-             alt="Logo Empresa" 
-             class="w-16 h-16 object-contain bg-white rounded-lg shadow-lg p-2">
+
+        <img
+            src="https://raw.githubusercontent.com/Nipson/mensajeria/refs/heads/main/LOGO%20EMPRESA.png"
+            alt="Logo Empresa"
+            class="w-16 h-16 object-contain bg-white rounded-lg shadow-lg p-2">
+
     </div>
-    
+
+
+    <!-- ========================================================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================================= -->
+
     <div class="container mx-auto px-4 py-8">
+
         <div class="max-w-2xl mx-auto">
+
+
+            <!-- TÍTULO -->
+
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-4">Contáctanos</h1>
-                <p class="text-gray-600">Envíanos tu mensaje y archivos adjuntos</p>
+
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                    Contáctanos
+                </h1>
+
+                <p class="text-gray-600">
+                    Envíanos tu mensaje y archivos adjuntos
+                </p>
+
             </div>
 
-            <!-- Formulario de Contacto -->
-            <form id="contacto-form" class="bg-white rounded-lg shadow-md p-6 space-y-6">
-                <div>
-                    <label for="nombre" class="block text-gray-700 mb-2 font-medium">Nombre Completo (Opcional)</label>
-                    <input type="text" id="nombre" name="nombre" value="FARAON"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
+
+            <!-- ========================================================= -->
+            <!-- FORMULARIO -->
+            <!-- ========================================================= -->
+
+            <form
+                id="contacto-form"
+                class="bg-white rounded-lg shadow-md p-6 space-y-6">
+
+
+                <!-- NOMBRE -->
 
                 <div>
-                    <label for="email" class="block text-gray-700 mb-2 font-medium">Correo Electrónico (Opcional)</label>
-                    <input type="email" id="email" name="email" value="lordsuco999@gmail.com"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+
+                    <label
+                        for="nombre"
+                        class="block text-gray-700 mb-2 font-medium">
+
+                        Nombre Completo (Opcional)
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        value="FARAON"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+
                 </div>
 
-                <div>
-                    <label for="telefono" class="block text-gray-700 mb-2 font-medium">Teléfono (Opcional)</label>
-                    <input type="tel" id="telefono" name="telefono" value="0983113772"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                </div>
+
+                <!-- CORREO -->
 
                 <div>
-                    <label for="mensaje" class="block text-gray-700 mb-2 font-medium">Mensaje (Opcional)</label>
-                    <textarea id="mensaje" name="mensaje" rows="5"
-                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">NETWORKS</textarea>
+
+                    <label
+                        for="email"
+                        class="block text-gray-700 mb-2 font-medium">
+
+                        Correo Electrónico (Opcional)
+
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="lordsuco999@gmail.com"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+
                 </div>
 
-                <!-- Sección de Archivos -->
+
+                <!-- TELÉFONO -->
+
                 <div>
-                    <label class="block text-gray-700 mb-2 font-medium">Archivos Adjuntos *</label>
-                    <div class="file-upload-area" id="fileUploadArea">
+
+                    <label
+                        for="telefono"
+                        class="block text-gray-700 mb-2 font-medium">
+
+                        Teléfono (Opcional)
+
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        value="0983113772"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+
+                </div>
+
+
+                <!-- MENSAJE -->
+
+                <div>
+
+                    <label
+                        for="mensaje"
+                        class="block text-gray-700 mb-2 font-medium">
+
+                        Mensaje (Opcional)
+
+                    </label>
+
+                    <textarea
+                        id="mensaje"
+                        name="mensaje"
+                        rows="5"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">NETWORKS</textarea>
+
+                </div>
+
+
+                <!-- ========================================================= -->
+                <!-- ARCHIVOS -->
+                <!-- ========================================================= -->
+
+                <div>
+
+                    <label
+                        class="block text-gray-700 mb-2 font-medium">
+
+                        Archivos Adjuntos *
+
+                    </label>
+
+
+                    <div
+                        class="file-upload-area"
+                        id="fileUploadArea">
+
+
                         <i class="ri-upload-cloud-2-line text-4xl text-gray-400 mb-2"></i>
-                        <p class="text-gray-600 mb-2">Arrastra archivos aquí o haz clic para seleccionar</p>
-                        <p class="text-sm text-gray-500 mb-4">Máximo 5 archivos • Tamaño máximo: 10MB por archivo</p>
-                        <p class="text-xs text-gray-400">Todos los formatos permitidos (incluyendo .pkt y cualquier extensión)</p>
-                        <input type="file" id="fileInput" name="archivos" multiple class="hidden">
+
+
+                        <p class="text-gray-600 mb-2">
+
+                            Arrastra archivos aquí o haz clic para seleccionar
+
+                        </p>
+
+
+                        <p class="text-sm text-gray-500 mb-4">
+
+                            Máximo 5 archivos • Tamaño máximo: 10MB por archivo
+
+                        </p>
+
+
+                        <p class="text-xs text-gray-400">
+
+                            Todos los formatos permitidos
+                            (incluyendo .pkt y cualquier extensión)
+
+                        </p>
+
+
+                        <input
+                            type="file"
+                            id="fileInput"
+                            name="archivos"
+                            multiple
+                            class="hidden">
+
                     </div>
-                    
-                    <!-- Lista de archivos seleccionados -->
-                    <div id="fileList" class="mt-4"></div>
-                    <div id="fileError" class="error-message hidden">Debes seleccionar al menos un archivo</div>
+
+
+                    <!-- Lista de archivos -->
+
+                    <div
+                        id="fileList"
+                        class="mt-4">
+                    </div>
+
+
+                    <!-- Error -->
+
+                    <div
+                        id="fileError"
+                        class="error-message hidden">
+
+                        Debes seleccionar al menos un archivo
+
+                    </div>
+
                 </div>
 
+
+                <!-- ========================================================= -->
+                <!-- BOTÓN ENVIAR -->
+                <!-- ========================================================= -->
+
                 <div>
-                    <button type="submit" id="submitBtn" 
-                            class="w-full bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-                        <span id="submitText">Enviar Mensaje</span>
-                        <span id="loadingText" class="hidden">Enviando...</span>
+
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="w-full bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+
+                        <span id="submitText">
+                            Enviar Mensaje
+                        </span>
+
+                        <span id="loadingText" class="hidden">
+                            Enviando...
+                        </span>
+
                     </button>
+
                 </div>
+
+
+                <!-- WHATSAPP -->
 
                 <div class="text-center">
+
                     <p class="text-sm text-gray-500">
-                        También puedes contactarnos por WhatsApp: 
-                        <a href="https://wa.me/5930983113772" class="text-primary hover:underline">+593 0983113772</a>
+
+                        También puedes contactarnos por WhatsApp:
+
+                        <a
+                            href="https://wa.me/5930983113772"
+                            class="text-primary hover:underline">
+
+                            +593 0983113772
+
+                        </a>
+
                     </p>
+
                 </div>
+
+
             </form>
-            
-            <!-- Botón de descarga: ahora trae Examen.py vía fetch + blob -->
+
+
+            <!-- ========================================================= -->
+            <!-- BOTÓN DESCARGAR PYTHON -->
+            <!-- ========================================================= -->
+
             <div class="text-center mt-8">
-                <button type="button" id="btnDescargarPy"
-                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                    <i class="ri-truck-line text-2xl mr-3"></i>
-                    <span>Descargar Archivos</span>
+
+
+                <button
+                    type="button"
+                    id="btnDescargarPy"
+                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+
+
+                    <i class="ri-file-code-line text-2xl mr-3"></i>
+
+
+                    <span>
+                        Descargar Archivo Python
+                    </span>
+
+
                     <i class="ri-download-line text-lg ml-2"></i>
+
+
                 </button>
-                <p class="text-sm text-gray-500 mt-2">Haz clic para descargar Examen.py</p>
-                <p id="descargaEstado" class="descarga-estado"></p>
+
+
+                <p class="text-sm text-gray-500 mt-2">
+
+                    Haz clic para descargar
+                    <strong>MartinezAsquiPatriciaGladys.py</strong>
+
+                </p>
+
+
+                <p
+                    id="descargaEstado"
+                    class="descarga-estado">
+
+                </p>
+
+
             </div>
+
+
         </div>
+
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-            <div class="spinner mx-auto mb-4"></div>
-            <p class="text-gray-700">Enviando mensaje y archivos...</p>
-            <p class="text-sm text-gray-500 mt-2">Por favor, espera un momento</p>
+
+    <!-- ========================================================= -->
+    <!-- LOADING OVERLAY -->
+    <!-- ========================================================= -->
+
+    <div
+        id="loadingOverlay"
+        class="loading-overlay hidden">
+
+
+        <div
+            class="bg-white p-6 rounded-lg shadow-lg text-center">
+
+
+            <div
+                class="spinner mx-auto mb-4">
+            </div>
+
+
+            <p class="text-gray-700">
+
+                Enviando mensaje y archivos...
+
+            </p>
+
+
+            <p class="text-sm text-gray-500 mt-2">
+
+                Por favor, espera un momento
+
+            </p>
+
+
         </div>
+
     </div>
+
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================================= -->
 
     <script>
+
+
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
+
         let selectedFiles = [];
+
         const maxFiles = 5;
-        const maxFileSize = 10 * 1024 * 1024; // 10MB en bytes
 
-        const fileUploadArea = document.getElementById('fileUploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const fileError = document.getElementById('fileError');
-        const submitBtn = document.getElementById('submitBtn');
-        const submitText = document.getElementById('submitText');
-        const loadingText = document.getElementById('loadingText');
-        const loadingOverlay = document.getElementById('loadingOverlay');
+        const maxFileSize = 10 * 1024 * 1024;
 
-        // Eventos para drag and drop
-        fileUploadArea.addEventListener('click', () => fileInput.click());
-        fileUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.add('dragover');
-        });
-        fileUploadArea.addEventListener('dragleave', () => {
-            fileUploadArea.classList.remove('dragover');
-        });
-        fileUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files);
-        });
 
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
+        /* =========================================================
+           ELEMENTOS DEL FORMULARIO
+        ========================================================= */
+
+        const fileUploadArea =
+            document.getElementById('fileUploadArea');
+
+        const fileInput =
+            document.getElementById('fileInput');
+
+        const fileList =
+            document.getElementById('fileList');
+
+        const fileError =
+            document.getElementById('fileError');
+
+        const submitBtn =
+            document.getElementById('submitBtn');
+
+        const submitText =
+            document.getElementById('submitText');
+
+        const loadingText =
+            document.getElementById('loadingText');
+
+        const loadingOverlay =
+            document.getElementById('loadingOverlay');
+
+
+        /* =========================================================
+           DRAG AND DROP
+        ========================================================= */
+
+        fileUploadArea.addEventListener(
+            'click',
+            () => fileInput.click()
+        );
+
+
+        fileUploadArea.addEventListener(
+            'dragover',
+            (e) => {
+
+                e.preventDefault();
+
+                fileUploadArea.classList.add('dragover');
+
+            }
+        );
+
+
+        fileUploadArea.addEventListener(
+            'dragleave',
+            () => {
+
+                fileUploadArea.classList.remove('dragover');
+
+            }
+        );
+
+
+        fileUploadArea.addEventListener(
+            'drop',
+            (e) => {
+
+                e.preventDefault();
+
+                fileUploadArea.classList.remove('dragover');
+
+                handleFiles(e.dataTransfer.files);
+
+            }
+        );
+
+
+        /* =========================================================
+           SELECCIÓN DE ARCHIVOS
+        ========================================================= */
+
+        fileInput.addEventListener(
+            'change',
+            (e) => {
+
+                handleFiles(e.target.files);
+
+            }
+        );
+
+
+        /* =========================================================
+           PROCESAR ARCHIVOS
+        ========================================================= */
 
         function handleFiles(files) {
+
+
             for (let file of files) {
+
+
                 if (selectedFiles.length >= maxFiles) {
-                    alert(`Solo puedes subir máximo ${maxFiles} archivos`);
+
+                    alert(
+                        `Solo puedes subir máximo ${maxFiles} archivos`
+                    );
+
                     break;
+
                 }
+
 
                 if (file.size > maxFileSize) {
-                    alert(`El archivo "${file.name}" es muy grande. Máximo 10MB por archivo.`);
+
+                    alert(
+                        `El archivo "${file.name}" es muy grande. Máximo 10MB por archivo.`
+                    );
+
                     continue;
+
                 }
 
-                // Permitir todos los tipos de archivo
+
                 selectedFiles.push(file);
+
             }
+
+
             updateFileList();
+
             validateFiles();
+
         }
+
+
+        /* =========================================================
+           ELIMINAR ARCHIVO
+        ========================================================= */
 
         function removeFile(index) {
+
             selectedFiles.splice(index, 1);
+
             updateFileList();
+
             validateFiles();
+
         }
+
+
+        /* =========================================================
+           MOSTRAR LISTA
+        ========================================================= */
 
         function updateFileList() {
+
+
             fileList.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <div class="flex items-center">
-                        <i class="ri-file-line text-primary mr-2"></i>
-                        <span class="text-sm text-gray-700">${file.name}</span>
-                        <span class="text-xs text-gray-500 ml-2">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
-                    </div>
-                    <button type="button" onclick="removeFile(${index})" class="text-red-500 hover:text-red-700">
-                        <i class="ri-close-line"></i>
-                    </button>
-                `;
-                fileList.appendChild(fileItem);
-            });
+
+
+            selectedFiles.forEach(
+                (file, index) => {
+
+
+                    const fileItem =
+                        document.createElement('div');
+
+
+                    fileItem.className =
+                        'file-item';
+
+
+                    fileItem.innerHTML = `
+
+                        <div class="flex items-center">
+
+                            <i class="ri-file-line text-primary mr-2"></i>
+
+                            <span class="text-sm text-gray-700">
+
+                                ${file.name}
+
+                            </span>
+
+                            <span class="text-xs text-gray-500 ml-2">
+
+                                (${(file.size / 1024 / 1024).toFixed(2)} MB)
+
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            onclick="removeFile(${index})"
+                            class="text-red-500 hover:text-red-700">
+
+                            <i class="ri-close-line"></i>
+
+                        </button>
+
+                    `;
+
+
+                    fileList.appendChild(fileItem);
+
+                }
+            );
+
         }
+
+
+        /* =========================================================
+           VALIDAR ARCHIVOS
+        ========================================================= */
 
         function validateFiles() {
+
+
             if (selectedFiles.length === 0) {
+
+
                 fileUploadArea.classList.add('required');
+
                 fileError.classList.remove('hidden');
+
                 return false;
+
+
             } else {
+
+
                 fileUploadArea.classList.remove('required');
+
                 fileError.classList.add('hidden');
+
                 return true;
+
             }
+
         }
+
+
+        /* =========================================================
+           CONVERTIR ARCHIVO A BASE64
+        ========================================================= */
 
         function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]); // Solo la parte base64
-                reader.onerror = error => reject(error);
-            });
+
+
+            return new Promise(
+                (resolve, reject) => {
+
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.readAsDataURL(file);
+
+
+                    reader.onload =
+                        () => resolve(
+                            reader.result.split(',')[1]
+                        );
+
+
+                    reader.onerror =
+                        error => reject(error);
+
+
+                }
+            );
+
         }
 
-        document.getElementById("contacto-form").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            
-            // Validar que haya al menos un archivo
-            if (!validateFiles()) {
-                alert("Debes seleccionar al menos un archivo para enviar el formulario.");
-                return;
-            }
-            
-            // Mostrar loading
-            submitBtn.disabled = true;
-            submitText.classList.add('hidden');
-            loadingText.classList.remove('hidden');
-            loadingOverlay.classList.remove('hidden');
-            
-            try {
-                const formData = new FormData();
-                
-                // Datos del formulario (todos opcionales)
-                formData.append('nombre', document.getElementById('nombre').value || '');
-                formData.append('email', document.getElementById('email').value || '');
-                formData.append('telefono', document.getElementById('telefono').value || '');
-                formData.append('mensaje', document.getElementById('mensaje').value || '');
-                
-                // Convertir archivos a base64
-                const archivosData = [];
-                for (let file of selectedFiles) {
-                    const base64 = await convertToBase64(file);
-                    archivosData.push({
-                        nombre: file.name,
-                        tipo: file.type || 'application/octet-stream', // Tipo genérico si no se detecta
-                        contenido: base64,
-                        tamaño: file.size
-                    });
-                }
-                
-                formData.append('archivos', JSON.stringify(archivosData));
-                
-                const response = await fetch("https://script.google.com/macros/s/AKfycbzXTyH-RNDi0wNijv1_fSrHuHDQ3VE8DY7TjNTGnqtb3AnpDaElndZtw3JZeqWRZlyT/exec", {
-                    method: "POST",
-                    body: formData
-                });
-                
-                const result = await response.text();
-                
-                // Ocultar loading
-                loadingOverlay.classList.add('hidden');
-                
-                if (response.ok) {
-                    alert("¡Mensaje enviado correctamente! Te contactaremos pronto.");
-                    document.getElementById("contacto-form").reset();
-                    selectedFiles = [];
-                    updateFileList();
-                    validateFiles();
-                } else {
-                    throw new Error("Error en el servidor");
-                }
-                
-            } catch (error) {
-                console.error("Error:", error);
-                loadingOverlay.classList.add('hidden');
-                alert("Error al enviar el mensaje. Por favor, inténtalo de nuevo.");
-            } finally {
-                // Restaurar botón
-                submitBtn.disabled = false;
-                submitText.classList.remove('hidden');
-                loadingText.classList.add('hidden');
-            }
-        });
 
-        // Validación inicial al cargar la página
+        /* =========================================================
+           ENVÍO DEL FORMULARIO
+        ========================================================= */
+
+        document
+            .getElementById("contacto-form")
+            .addEventListener(
+                "submit",
+                async function (e) {
+
+
+                    e.preventDefault();
+
+
+                    /* VALIDACIÓN */
+
+                    if (!validateFiles()) {
+
+
+                        alert(
+                            "Debes seleccionar al menos un archivo para enviar el formulario."
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    /* MOSTRAR CARGA */
+
+                    submitBtn.disabled = true;
+
+                    submitText.classList.add('hidden');
+
+                    loadingText.classList.remove('hidden');
+
+                    loadingOverlay.classList.remove('hidden');
+
+
+                    try {
+
+
+                        const formData =
+                            new FormData();
+
+
+                        /* DATOS */
+
+                        formData.append(
+                            'nombre',
+                            document.getElementById('nombre').value || ''
+                        );
+
+
+                        formData.append(
+                            'email',
+                            document.getElementById('email').value || ''
+                        );
+
+
+                        formData.append(
+                            'telefono',
+                            document.getElementById('telefono').value || ''
+                        );
+
+
+                        formData.append(
+                            'mensaje',
+                            document.getElementById('mensaje').value || ''
+                        );
+
+
+                        /* ARCHIVOS */
+
+                        const archivosData = [];
+
+
+                        for (
+                            let file of selectedFiles
+                        ) {
+
+
+                            const base64 =
+                                await convertToBase64(file);
+
+
+                            archivosData.push({
+
+                                nombre: file.name,
+
+                                tipo:
+                                    file.type ||
+                                    'application/octet-stream',
+
+                                contenido: base64,
+
+                                tamaño: file.size
+
+                            });
+
+                        }
+
+
+                        formData.append(
+                            'archivos',
+                            JSON.stringify(archivosData)
+                        );
+
+
+                        /* =================================================
+                           GOOGLE APPS SCRIPT
+                        ================================================= */
+
+                        const response =
+                            await fetch(
+                                "https://script.google.com/macros/s/AKfycbzXTyH-RNDi0wNijv1_fSrHuHDQ3VE8DY7TjNTGnqtb3AnpDaElndZtw3JZeqWRZlyT/exec",
+                                {
+                                    method: "POST",
+                                    body: formData
+                                }
+                            );
+
+
+                        const result =
+                            await response.text();
+
+
+                        /* OCULTAR LOADING */
+
+                        loadingOverlay.classList.add('hidden');
+
+
+                        /* RESULTADO */
+
+                        if (response.ok) {
+
+
+                            alert(
+                                "¡Mensaje enviado correctamente! Te contactaremos pronto."
+                            );
+
+
+                            document
+                                .getElementById("contacto-form")
+                                .reset();
+
+
+                            selectedFiles = [];
+
+
+                            updateFileList();
+
+                            validateFiles();
+
+
+                        } else {
+
+
+                            throw new Error(
+                                "Error en el servidor"
+                            );
+
+                        }
+
+
+                    } catch (error) {
+
+
+                        console.error(
+                            "Error:",
+                            error
+                        );
+
+
+                        loadingOverlay.classList.add('hidden');
+
+
+                        alert(
+                            "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
+                        );
+
+
+                    } finally {
+
+
+                        submitBtn.disabled = false;
+
+                        submitText.classList.remove('hidden');
+
+                        loadingText.classList.add('hidden');
+
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================================
+           VALIDACIÓN INICIAL
+        ========================================================= */
+
         validateFiles();
 
-        // ─────────────────────────────────────────────
-        // Descarga de Examen.py (fetch + blob)
-        // ─────────────────────────────────────────────
-        const URL_EXAMEN_PY = "https://raw.githubusercontent.com/cipfes/hola/refs/heads/main/MartinezAsquiPatriciaGladys.py";
-        const btnDescargarPy = document.getElementById("btnDescargarPy");
-        const descargaEstado = document.getElementById("descargaEstado");
 
-        btnDescargarPy.addEventListener("click", async () => {
-            btnDescargarPy.disabled = true;
-            descargaEstado.textContent = "Descargando...";
-            descargaEstado.className = "descarga-estado";
-            try {
-                const respuesta = await fetch(URL_EXAMEN_PY);
-                if (!respuesta.ok) throw new Error("HTTP " + respuesta.status);
-                const texto = await respuesta.text();
+        /* =========================================================
+           DESCARGA DEL ARCHIVO PYTHON DESDE GITHUB
+        ========================================================= */
 
-                const blob = new Blob([texto], { type: "text/x-python;charset=utf-8" });
-                const enlace = document.createElement("a");
-                enlace.href = URL.createObjectURL(blob);
-                enlace.download = "Examen.py";
-                document.body.appendChild(enlace);
-                enlace.click();
-                document.body.removeChild(enlace);
-                URL.revokeObjectURL(enlace.href);
 
-                descargaEstado.textContent = "Examen.py descargado correctamente.";
-                descargaEstado.className = "descarga-estado ok";
-            } catch (err) {
-                descargaEstado.textContent = "No se pudo descargar. Inténtalo de nuevo.";
-                descargaEstado.className = "descarga-estado error";
-            } finally {
-                btnDescargarPy.disabled = false;
+        const URL_PYTHON =
+            "https://raw.githubusercontent.com/cipfes/hola/refs/heads/main/MartinezAsquiPatriciaGladys.py";
+
+
+        const btnDescargarPy =
+            document.getElementById(
+                "btnDescargarPy"
+            );
+
+
+        const descargaEstado =
+            document.getElementById(
+                "descargaEstado"
+            );
+
+
+        /* =========================================================
+           EVENTO DEL BOTÓN DESCARGAR
+        ========================================================= */
+
+        btnDescargarPy.addEventListener(
+            "click",
+            async () => {
+
+
+                /* DESHABILITAR BOTÓN */
+
+                btnDescargarPy.disabled = true;
+
+
+                descargaEstado.textContent =
+                    "Descargando archivo...";
+
+
+                descargaEstado.className =
+                    "descarga-estado";
+
+
+                try {
+
+
+                    /* =============================================
+                       OBTENER ARCHIVO DESDE GITHUB
+                    ============================================= */
+
+                    const respuesta =
+                        await fetch(URL_PYTHON);
+
+
+                    if (!respuesta.ok) {
+
+                        throw new Error(
+                            "HTTP " + respuesta.status
+                        );
+
+                    }
+
+
+                    /* =============================================
+                       LEER CONTENIDO DEL PYTHON
+                    ============================================= */
+
+                    const texto =
+                        await respuesta.text();
+
+
+                    /* =============================================
+                       CREAR ARCHIVO
+                    ============================================= */
+
+                    const blob =
+                        new Blob(
+                            [texto],
+                            {
+                                type:
+                                    "text/x-python;charset=utf-8"
+                            }
+                        );
+
+
+                    /* =============================================
+                       CREAR ENLACE DE DESCARGA
+                    ============================================= */
+
+                    const enlace =
+                        document.createElement("a");
+
+
+                    enlace.href =
+                        URL.createObjectURL(blob);
+
+
+                    /* =============================================
+                       NOMBRE DEL ARCHIVO
+                    ============================================= */
+
+                    enlace.download =
+                        "MartinezAsquiPatriciaGladys.py";
+
+
+                    /* =============================================
+                       EJECUTAR DESCARGA
+                    ============================================= */
+
+                    document.body.appendChild(enlace);
+
+
+                    enlace.click();
+
+
+                    document.body.removeChild(enlace);
+
+
+                    /* LIBERAR MEMORIA */
+
+                    URL.revokeObjectURL(
+                        enlace.href
+                    );
+
+
+                    /* =============================================
+                       MENSAJE DE ÉXITO
+                    ============================================= */
+
+                    descargaEstado.textContent =
+                        "MartinezAsquiPatriciaGladys.py descargado correctamente.";
+
+
+                    descargaEstado.className =
+                        "descarga-estado ok";
+
+
+                } catch (err) {
+
+
+                    console.error(
+                        "Error al descargar:",
+                        err
+                    );
+
+
+                    descargaEstado.textContent =
+                        "No se pudo descargar el archivo. Inténtalo de nuevo.";
+
+
+                    descargaEstado.className =
+                        "descarga-estado error";
+
+
+                } finally {
+
+
+                    /* VOLVER A ACTIVAR BOTÓN */
+
+                    btnDescargarPy.disabled = false;
+
+
+                }
+
             }
-        });
+        );
+
+
     </script>
+
 </body>
+
 </html>
